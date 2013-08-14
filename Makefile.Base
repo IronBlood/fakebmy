@@ -1,7 +1,7 @@
 #################################################################
 # Makefile for FIREBIRD BBS v3.0K                               #
 #################################################################
-# 1. This package is derived from Firebird BBS 1.5, which was 
+# 1. This package is derived from Firebird BBS 1.5, which was
 #    developed by the Department of Computer Science & Information
 #    Engineering, Chung Chen University of Taiwan, ROC.
 #    This package is developed by the Board of System Administrators,
@@ -26,23 +26,25 @@ BBSHOME=/home/bbs
 BBSUID=999
 BBSGRP=999
 
-OS_DEF   = -DLINUX
+#OS_DEF   = -DLINUX
 CC       = gcc
-CFLAGS   = -Wall -O2 -mmmx -msse -pipe -DCONF_HAVE_OPENPTY -I$(BASEPATH)/include -I$(BASEPATH)/ythtlib -I$(BASEPATH)/libythtbbs -L/usr/lib/mysql -lmysqlclient -lxml2
-CPPFLAGS =  -I/usr/include/mysql -DENABLE_MYSQL
-CFLAGSTEST   = -Wall -pipe -DCONF_HAVE_OPENPTY -I$(BASEPATH)/include -I$(BASEPATH)/ythtlib -I$(BASEPATH)/libythtbbs -g
-#CFLAGSTEST   = -pipe -DCONF_HAVE_OPENPTY -I$(BASEPATH)/include -I$(BASEPATH)/ythtlib -I$(BASEPATH)/libythtbbs -g -pg -static 
-BBSLIB = -L$(BBSHOME)/bin -lythtbbs -lytht
-LIBS     = 
-LIBSTEST = 
-LIBSQL = -L/usr/lib/mysql -lmysqlclient
-CGIPATH = /home/apache/cgi-bin
-HTMPATH = /home/apache/htdocs
-WWW_LIBS =  -lghthash
-WWW_CPPFLAGS=  -DENABLE_GHTHASH
+#CFLAGS   = -Wall -O2 -mmmx -msse -pipe -DCONF_HAVE_OPENPTY -I$(BASEPATH)/include -I$(BASEPATH)/ythtlib -I$(BASEPATH)/libythtbbs -L/usr/lib/mysql -lmysqlclient -lxml2
+CFLAGS=-Wall -O2 -g -DCONF_HAVE_OPENPTY -D_GNU_SOURCE -DLINUX -I$(BASEPATH)/include -I$(BASEPATH)/ythtlib -I$(BASEPATH)/libythtbbs -I/usr/include/libxml2
+#CPPFLAGS =  -I/usr/include/mysql -DENABLE_MYSQL
+#CFLAGSTEST   = -Wall -pipe -DCONF_HAVE_OPENPTY -I$(BASEPATH)/include -I$(BASEPATH)/ythtlib -I$(BASEPATH)/libythtbbs -g
+#CFLAGSTEST   = -pipe -DCONF_HAVE_OPENPTY -I$(BASEPATH)/include -I$(BASEPATH)/ythtlib -I$(BASEPATH)/libythtbbs -g -pg -static
+LDFLAGS=-L$(BBSHOME)/bin
+BBSLIB=-lythtbbs -lytht
+LIBS=-lmysqlclient -lxml2
+#LIBSTEST =
+#LIBSQL = -L/usr/lib/mysql -lmysqlclient
+#CGIPATH = /home/apache/cgi-bin
+#HTMPATH = /home/apache/htdocs
+#WWW_LIBS =  -lghthash
+#WWW_CPPFLAGS=  -DENABLE_GHTHASH
 INSTALL  = /usr/bin/install -c
 
-CSIE_DEF = 
+#CSIE_DEF =
 
 $(BBSHOME)/bin/%:%
 	cp $< $@.new

@@ -48,7 +48,7 @@ include .depend
 endif
 
 depend dep .depend:
-	@echo "gcc $(CFLAGS) -M $(CFILE) $(OTHERS) upload.c >.depend"
+	@echo "gcc $(CFLAGS) -MM $(CFILE) $(OTHERS) upload.c >.depend"
 
 proto proto.h:
 	@echo "cproto -DMAKE_PROTO -D__GNUC__ $(CFILE) $(OTHERS) $(CPPFLAGS) $(WWW_CPPFLAGS) -I$(BASEPATH)/libythtbbs -I$(BASEPATH)/ythtlib -I$(BASEPATH)/include > proto.h"

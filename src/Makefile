@@ -36,7 +36,7 @@ CFILE    = bbs.c record.c delete.c main.c stuff.c mail.c register.c \
 
 COBJS    :=$(CFILE:.c=.o)
 
-COBJSTEST:=$(CFILE:.c=.t)
+#COBJSTEST:=$(CFILE:.c=.t)
 
 OTHERS   =
 
@@ -45,15 +45,15 @@ GARBAGE  = a.out core installchatd bbs.chatd bbsd thread
 # The -DINVISIBLE makes bbs users invisible to 'finger' and 'who'.
 # Simply remove it if you don't want this feature.
 
-SITE_DEF = -DBBSHOME='"$(BBSHOME)"' -DBBSUID=$(BBSUID) -DBBSGID=$(BBSGRP)
+#SITE_DEF = -DBBSHOME='"$(BBSHOME)"' -DBBSUID=$(BBSUID) -DBBSGID=$(BBSGRP)
 
-DEFINES	=  -DBBSMAIN $(CSIE_DEF) $(OS_DEF)
+#DEFINES	=  -DBBSMAIN $(CSIE_DEF) $(OS_DEF)
 
 .SUFFIXES: .o .c .ln .t
 
-.c.o:   ;   @echo "$(CC) -D_GNU_SOURCE $(CFLAGS) $(CPPFLAGS) $(DEFINES) -DBACK_DELETE_RANGE -include proto.h -c $*.c"
+.c.o:   ;   @echo "$(CC) $(CFLAGS) -include proto.h -c $*.c"
 
-.c.t:   ;   @echo "$(CC) -D_GNU_SOURCE $(CFLAGSTEST) $(CPPFLAGS) $(DEFINES) -DBACK_DELETE_RANGE -include proto.h -c $*.c -o $*.t"
+#.c.t:   ;   @echo "$(CC) -D_GNU_SOURCE $(CFLAGSTEST) $(CPPFLAGS) $(DEFINES) -DBACK_DELETE_RANGE -include proto.h -c $*.c -o $*.t"
 
 #--------------------- Dependency starts here -------------------
 all: $(PROGNAME) bbs.chatd bbsd telnet thread
@@ -67,23 +67,23 @@ endif
 #	@false
 
 depend dep .depend:
-	@echo "gcc $(CFLAGS) -M *.c >.depend"
-	@echo "gcc $(CFLAGSTEST) -M *.c |sed -es/"o:"/"t:"/ >>.depend"
+	@echo "gcc $(CFLAGS) -MM *.c >.depend"
+	@echo "gcc $(CFLAGSTEST) -MM *.c |sed -es/"o:"/"t:"/ >>.depend"
 
 proto proto.h:
 	@echo "echo '#include "bbs.h"' > proto.h"
-	@echo "cproto $(CFILE) $(DEFINES) -DBACK_DELETE_RANG -I $(BASEPATH)/include -I $(BASEPATH)/ythtlib -I $(BASEPATH)/libythtbbs >> proto.h"
+	@echo "cproto $(CFILE) -I $(BASEPATH)/include -I $(BASEPATH)/ythtlib -I $(BASEPATH)/libythtbbs >> proto.h"
 
 $(COBJS) $(COBJSTEST): .depend proto.h
 
 $(PROGNAME): $(COBJS) $(OTHERS)
-	@echo "$(CC) -o $(PROGNAME) $(CFLAGS) $(COBJS) $(LIBS)   $(BBSLIB)"
+	@echo "$(CC) $(COBJS) $(LIBS) $(BBSLIB) -o $(PROGNAME)"
 
-bbstest: $(COBJSTEST) $(OTHERS)
-	@echo "$(CC) -o bbstest $(CFLAGSTEST) $(COBJSTEST) $(LIBSTEST)  $(BBSLIB)"
+#bbstest: $(COBJSTEST) $(OTHERS)
+#	@echo "$(CC) -o bbstest $(CFLAGSTEST) $(COBJSTEST) $(LIBSTEST)  $(BBSLIB)"
 
 bbsd: bbsd.c
-	@echo "$(CC) $(CFLAGS) -o bbsd $(OS_DEF) bbsd.c  $(BBSLIB)"
+	@echo "$(CC) $(CFLAGS) $(BBSLIB) bbsd.c -o bbsd"
 
 bbsnet: bbsnet.c
 	@echo "$(CC) bbsnet.c -o bbsnet"
